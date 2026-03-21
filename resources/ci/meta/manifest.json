@@ -1,0 +1,15 @@
+{
+  "brand": "ci",
+  "version": "0.1",
+  "tokens": {
+    "colors": {
+      "primary": "#000000",
+      "secondary": "#FFFFFF"
+    },
+    "typography": {
+      "fontFamily": "system-ui"
+    }
+  },
+  "components": {},
+  "templates": {}
+}

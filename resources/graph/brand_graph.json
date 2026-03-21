@@ -1,0 +1,66 @@
+{
+  "version": "0.1",
+  "nodes": {
+    "ci": {
+      "id": "ci",
+      "type": "core",
+      "extends": null,
+      "manifest": "resources/ci/meta/manifest.json"
+    },
+    "cimeika": {
+      "id": "cimeika",
+      "type": "core",
+      "extends": "ci",
+      "manifest": "resources/cimeika/meta/manifest.json"
+    },
+    "казкар": {
+      "id": "казкар",
+      "type": "brand",
+      "extends": "cimeika",
+      "manifest": "resources/brands/казкар/meta/manifest.json",
+      "overlays": "resources/brands/казкар/overlays/"
+    },
+    "подія": {
+      "id": "подія",
+      "type": "brand",
+      "extends": "cimeika",
+      "manifest": "resources/brands/подія/meta/manifest.json",
+      "overlays": "resources/brands/подія/overlays/"
+    },
+    "настрій": {
+      "id": "настрій",
+      "type": "brand",
+      "extends": "cimeika",
+      "manifest": "resources/brands/настрій/meta/manifest.json",
+      "overlays": "resources/brands/настрій/overlays/"
+    },
+    "маля": {
+      "id": "маля",
+      "type": "brand",
+      "extends": "cimeika",
+      "manifest": "resources/brands/маля/meta/manifest.json",
+      "overlays": "resources/brands/маля/overlays/"
+    },
+    "календар": {
+      "id": "календар",
+      "type": "brand",
+      "extends": "cimeika",
+      "manifest": "resources/brands/календар/meta/manifest.json",
+      "overlays": "resources/brands/календар/overlays/"
+    },
+    "галерея": {
+      "id": "галерея",
+      "type": "brand",
+      "extends": "cimeika",
+      "manifest": "resources/brands/галерея/meta/manifest.json",
+      "overlays": "resources/brands/галерея/overlays/"
+    },
+    "ci-moment": {
+      "id": "ci-moment",
+      "type": "brand",
+      "extends": "cimeika",
+      "manifest": "resources/brands/ci-moment/meta/manifest.json",
+      "overlays": "resources/brands/ci-moment/overlays/"
+    }
+  }
+}

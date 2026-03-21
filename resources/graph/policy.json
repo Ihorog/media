@@ -1,0 +1,13 @@
+{
+  "version": "0.1",
+  "rules": {
+    "core.brand.fork": {
+      "action": "deny",
+      "description": "Core brands (ci, cimeika) cannot be forked"
+    },
+    "brand.extends": {
+      "action": "allow",
+      "description": "Brands can only extend cimeika"
+    }
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "brand": "ci-moment",
+  "version": "0.1",
+  "extends": "cimeika"
+}
