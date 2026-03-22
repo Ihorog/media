@@ -1,0 +1,12 @@
+{
+  "brand": "cimeika",
+  "version": "0.1",
+  "extends": "ci",
+  "tokens": {
+    "colors": {
+      "accent": "#FF6B35"
+    }
+  },
+  "components": {},
+  "templates": {}
+}
