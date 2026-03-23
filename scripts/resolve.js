@@ -71,7 +71,10 @@ if (!brandId) {
 
 try {
   const resolved = resolveBrand(brandId);
-  console.log(JSON.stringify(resolved, null, 2));
+  const json = JSON.stringify(resolved, null, 2);
+  const outPath = path.join(process.cwd(), 'resolved_manifest.json');
+  fs.writeFileSync(outPath, json + '\n', 'utf8');
+  console.log(`✓ Resolved manifest written to ${outPath}`);
 } catch (err) {
   console.error('Error:', err.message);
   process.exit(1);
