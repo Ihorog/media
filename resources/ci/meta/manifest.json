@@ -8,6 +8,15 @@
     },
     "typography": {
       "fontFamily": "system-ui"
+    },
+    "assets": {
+      "icon72": "ci-icon-72",
+      "icon128": "ci-icon-128",
+      "icon192": "ci-icon-192",
+      "icon512": "ci-icon-512",
+      "logo": "ci-logo-primary",
+      "background": "ci-logo-background",
+      "legend": "ci-legend-primary"
     }
   },
   "components": {},

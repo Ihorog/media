@@ -2,6 +2,12 @@
   "tokens": {
     "colors": {
       "primary": "#C9A84C"
+    },
+    "assets": {
+      "legendScene1": "kazkar-legend-1",
+      "legendScene2": "kazkar-legend-2",
+      "legendScene3": "kazkar-legend-3",
+      "legendScene4": "kazkar-legend-4"
     }
   }
 }

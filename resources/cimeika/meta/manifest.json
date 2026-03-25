@@ -5,6 +5,12 @@
   "tokens": {
     "colors": {
       "accent": "#FF6B35"
+    },
+    "assets": {
+      "logo": "cimeika-logo-primary",
+      "nacinnja": "cimeika-nacinnja",
+      "legendWindow1": "legend-window-4",
+      "legendWindow2": "legend-window-5"
     }
   },
   "components": {},
