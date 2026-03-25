@@ -62,20 +62,24 @@ function deepMerge(target, source) {
   return output;
 }
 
-// CLI
-const brandId = process.argv[2];
-if (!brandId) {
-  console.error('Usage: resolve.js <brand_id>');
-  process.exit(1);
-}
+module.exports = { resolveBrand, deepMerge };
 
-try {
-  const resolved = resolveBrand(brandId);
-  const json = JSON.stringify(resolved, null, 2);
-  const outPath = path.join(process.cwd(), 'resolved_manifest.json');
-  fs.writeFileSync(outPath, json + '\n', 'utf8');
-  console.log(`✓ Resolved manifest written to ${outPath}`);
-} catch (err) {
-  console.error('Error:', err.message);
-  process.exit(1);
+// CLI
+if (require.main === module) {
+  const brandId = process.argv[2];
+  if (!brandId) {
+    console.error('Usage: resolve.js <brand_id>');
+    process.exit(1);
+  }
+
+  try {
+    const resolved = resolveBrand(brandId);
+    const json = JSON.stringify(resolved, null, 2);
+    const outPath = path.join(process.cwd(), 'resolved_manifest.json');
+    fs.writeFileSync(outPath, json + '\n', 'utf8');
+    console.log(`✓ Resolved manifest written to ${outPath}`);
+  } catch (err) {
+    console.error('Error:', err.message);
+    process.exit(1);
+  }
 }

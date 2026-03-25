@@ -1,0 +1,166 @@
+{
+  "version": "0.1",
+  "mediaTypes": ["image", "audio", "video", "text"],
+  "assets": {
+    "ci-icon-72": {
+      "id": "ci-icon-72",
+      "type": "image",
+      "format": "png",
+      "path": "72.png",
+      "role": "icon",
+      "brand": "ci"
+    },
+    "ci-icon-128": {
+      "id": "ci-icon-128",
+      "type": "image",
+      "format": "png",
+      "path": "128.png",
+      "role": "icon",
+      "brand": "ci"
+    },
+    "ci-icon-192": {
+      "id": "ci-icon-192",
+      "type": "image",
+      "format": "png",
+      "path": "icon-192.png",
+      "role": "icon",
+      "brand": "ci"
+    },
+    "ci-icon-512": {
+      "id": "ci-icon-512",
+      "type": "image",
+      "format": "png",
+      "path": "icon-512.png",
+      "role": "icon",
+      "brand": "ci"
+    },
+    "ci-logo-primary": {
+      "id": "ci-logo-primary",
+      "type": "image",
+      "format": "png",
+      "path": "Ci.png",
+      "role": "logo",
+      "brand": "ci"
+    },
+    "ci-logo-background": {
+      "id": "ci-logo-background",
+      "type": "image",
+      "format": "png",
+      "path": "Ci_fon.png",
+      "role": "background",
+      "brand": "ci"
+    },
+    "ci-logo-gold-plus": {
+      "id": "ci-logo-gold-plus",
+      "type": "image",
+      "format": "png",
+      "path": "ci_gold_plus.png",
+      "role": "logo-variant",
+      "brand": "ci"
+    },
+    "ci-logo-gold": {
+      "id": "ci-logo-gold",
+      "type": "image",
+      "format": "png",
+      "path": "cigold.png",
+      "role": "logo-variant",
+      "brand": "ci"
+    },
+    "ci-logo-gold-jpg": {
+      "id": "ci-logo-gold-jpg",
+      "type": "image",
+      "format": "jpg",
+      "path": "logo/ci_gold_plus.jpg",
+      "role": "logo-variant",
+      "brand": "ci"
+    },
+    "cimeika-logo-primary": {
+      "id": "cimeika-logo-primary",
+      "type": "image",
+      "format": "png",
+      "path": "Cimeika.png",
+      "role": "logo",
+      "brand": "cimeika"
+    },
+    "cimeika-nacinnja": {
+      "id": "cimeika-nacinnja",
+      "type": "image",
+      "format": "png",
+      "path": "nacinnja.png",
+      "role": "icon",
+      "brand": "cimeika"
+    },
+    "ci-legend-primary": {
+      "id": "ci-legend-primary",
+      "type": "image",
+      "format": "png",
+      "path": "legend_ci.png",
+      "role": "legend",
+      "brand": "ci"
+    },
+    "legend-window-4": {
+      "id": "legend-window-4",
+      "type": "image",
+      "format": "png",
+      "path": "legend_window (4).png",
+      "role": "legend-scene",
+      "brand": "cimeika"
+    },
+    "legend-window-5": {
+      "id": "legend-window-5",
+      "type": "image",
+      "format": "png",
+      "path": "legend_window (5).png",
+      "role": "legend-scene",
+      "brand": "cimeika"
+    },
+    "kazkar-legend-1": {
+      "id": "kazkar-legend-1",
+      "type": "image",
+      "format": "jpg",
+      "path": "legend_oldbook (1).jpg",
+      "role": "legend-scene",
+      "brand": "казкар"
+    },
+    "kazkar-legend-2": {
+      "id": "kazkar-legend-2",
+      "type": "image",
+      "format": "jpg",
+      "path": "legend_oldbook (2).jpg",
+      "role": "legend-scene",
+      "brand": "казкар"
+    },
+    "kazkar-legend-3": {
+      "id": "kazkar-legend-3",
+      "type": "image",
+      "format": "jpg",
+      "path": "legend_oldbook (3).jpg",
+      "role": "legend-scene",
+      "brand": "казкар"
+    },
+    "kazkar-legend-4": {
+      "id": "kazkar-legend-4",
+      "type": "image",
+      "format": "jpg",
+      "path": "legend_oldbook (4).jpg",
+      "role": "legend-scene",
+      "brand": "казкар"
+    },
+    "podiya-hero": {
+      "id": "podiya-hero",
+      "type": "image",
+      "format": "jpg",
+      "path": "Podija.jpg",
+      "role": "hero",
+      "brand": "подія"
+    },
+    "ci-moment-scene": {
+      "id": "ci-moment-scene",
+      "type": "image",
+      "format": "jpg",
+      "path": "image-6.jpg",
+      "role": "scene",
+      "brand": "ci-moment"
+    }
+  }
+}

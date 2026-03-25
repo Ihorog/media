@@ -2,6 +2,9 @@
   "tokens": {
     "colors": {
       "primary": "#264653"
+    },
+    "assets": {
+      "scene": "ci-moment-scene"
     }
   }
 }
