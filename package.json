@@ -1,0 +1,16 @@
+{
+  "name": "media",
+  "version": "1.0.0",
+  "description": "Cimeika media asset registry",
+  "scripts": {
+    "scan": "node scripts/scan-media.mjs",
+    "ingest": "node scripts/ingest-images.mjs",
+    "build:indexes": "node scripts/build-indexes.mjs",
+    "validate": "node scripts/validate-structure.mjs",
+    "validate-graph": "node scripts/validate-graph.js",
+    "build": "node scripts/build.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

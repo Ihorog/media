@@ -1,0 +1,19 @@
+name: Validate Asset Structure
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  validate-structure:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Validate asset registry structure
+        run: node scripts/validate-structure.mjs
