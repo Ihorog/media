@@ -1,0 +1,115 @@
+name: CIMEIKA Self-Update
+
+on:
+  repository_dispatch:
+    types: [cimeika-self-update]
+  schedule:
+    - cron: '0 5 * * 1'   # щопонеділка 05:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  self-update:
+    name: Self-Update · ${{ github.repository }}
+    runs-on: ubuntu-latest
+    outputs:
+      merged: ${{ steps.merge.outputs.merged }}
+      skipped: ${{ steps.merge.outputs.skipped }}
+      failed: ${{ steps.merge.outputs.failed }}
+
+    steps:
+      - name: Merge Dependabot PRs
+        id: merge
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { data: prs } = await github.rest.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              per_page: 50
+            });
+
+            const depPRs = prs.filter(p => p.user.login === 'dependabot[bot]');
+            const results = { merged: [], skipped: [], failed: [] };
+
+            for (const pr of depPRs) {
+              // визначаємо тип оновлення з назви гілки
+              const branch = pr.head.ref;
+              const isMajor = /major/.test(pr.title.toLowerCase()) ||
+                              /from \d+ to \d+/.test(pr.title) && (() => {
+                                const m = pr.title.match(/from (\d+)\.\d+.*to (\d+)\.\d+/);
+                                return m && parseInt(m[2]) > parseInt(m[1]);
+                              })();
+
+              // major npm/pip — пропускаємо (тільки github-actions пропускаємо через)
+              const isGHActions = branch.includes('github-actions') ||
+                                  pr.title.includes('actions/');
+
+              if (isMajor && !isGHActions) {
+                results.skipped.push(`#${pr.number} ${pr.title}`);
+                continue;
+              }
+
+              try {
+                // approve
+                await github.rest.pulls.createReview({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  pull_number: pr.number,
+                  event: 'APPROVE'
+                });
+
+                // merge
+                const res = await github.rest.pulls.merge({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  pull_number: pr.number,
+                  merge_method: 'squash'
+                });
+
+                if (res.data.merged) {
+                  results.merged.push(`#${pr.number} ${pr.title}`);
+                }
+              } catch (err) {
+                results.failed.push(`#${pr.number} ${pr.title} — ${err.message}`);
+              }
+            }
+
+            core.setOutput('merged', results.merged.length.toString());
+            core.setOutput('skipped', results.skipped.length.toString());
+            core.setOutput('failed', results.failed.length.toString());
+
+            // Summary
+            const lines = [
+              `## 🔄 CIMEIKA Self-Update · ${context.repo.repo}`,
+              ``,
+              `✅ **Merged:** ${results.merged.length}`,
+              ...results.merged.map(t => `  - ${t}`),
+              ``,
+              `⏭️ **Skipped (major):** ${results.skipped.length}`,
+              ...results.skipped.map(t => `  - ${t}`),
+              ``,
+              `⚠️ **Failed:** ${results.failed.length}`,
+              ...results.failed.map(t => `  - ${t}`),
+            ];
+
+            await core.summary.addRaw(lines.join('\n')).write();
+            console.log(lines.join('\n'));
+
+      - name: Report to orchestrator
+        if: github.event_name == 'repository_dispatch'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            // Пишемо статус у GitHub Step Summary — orchestrator читає через API
+            console.log('Repo:', context.repo.repo);
+            console.log('Merged:', '${{ steps.merge.outputs.merged }}');
+            console.log('Skipped:', '${{ steps.merge.outputs.skipped }}');
+            console.log('Failed:', '${{ steps.merge.outputs.failed }}');
