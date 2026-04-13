@@ -1,0 +1,148 @@
+name: Dependabot Auto-Merge
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  pull_request_review:
+    types: [submitted]
+  check_suite:
+    types: [completed]
+  workflow_run:
+    workflows: ["Unified CI/CD Pipeline"]
+    types: [completed]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  # ─── КРОК 1: Перевіряємо — це Dependabot PR? ─────────────────────────────
+  dependabot-gate:
+    name: Dependabot Gate
+    runs-on: ubuntu-latest
+    if: github.actor == 'dependabot[bot]'
+    outputs:
+      update-type: ${{ steps.meta.outputs.update-type }}
+      dependency-names: ${{ steps.meta.outputs.dependency-names }}
+      safe-to-merge: ${{ steps.meta.outputs.safe-to-merge }}
+    steps:
+      - name: Fetch Dependabot metadata
+        id: meta
+        uses: dependabot/fetch-metadata@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Evaluate safety
+        id: safety
+        run: |
+          UPDATE="${{ steps.meta.outputs.update-type }}"
+          echo "Update type: $UPDATE"
+          # patch та minor — автоматично; major — тільки якщо github-actions
+          ECOSYSTEM="${{ steps.meta.outputs.package-ecosystem }}"
+          if [[ "$UPDATE" == "version-update:semver-patch" ]]; then
+            echo "safe-to-merge=true" >> "$GITHUB_OUTPUT"
+          elif [[ "$UPDATE" == "version-update:semver-minor" ]]; then
+            echo "safe-to-merge=true" >> "$GITHUB_OUTPUT"
+          elif [[ "$UPDATE" == "version-update:semver-major" && "$ECOSYSTEM" == "github-actions" ]]; then
+            echo "safe-to-merge=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "safe-to-merge=false" >> "$GITHUB_OUTPUT"
+            echo "⚠️ Major update for $ECOSYSTEM — потребує ручного review"
+          fi
+
+  # ─── КРОК 2: Авто-approve (patch / minor) ────────────────────────────────
+  auto-approve:
+    name: Auto-Approve
+    runs-on: ubuntu-latest
+    needs: dependabot-gate
+    if: needs.dependabot-gate.outputs.safe-to-merge == 'true'
+    steps:
+      - name: Approve PR
+        uses: hmarr/auto-approve-action@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  # ─── КРОК 3: Авто-merge після approve + CI green ─────────────────────────
+  auto-merge:
+    name: Auto-Merge
+    runs-on: ubuntu-latest
+    needs: [dependabot-gate, auto-approve]
+    if: needs.dependabot-gate.outputs.safe-to-merge == 'true'
+    steps:
+      - name: Enable auto-merge (squash)
+        run: |
+          gh pr merge "${{ github.event.pull_request.number }}" \
+            --auto \
+            --squash \
+            --repo "${{ github.repository }}"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Comment on PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            if (!pr) return;
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pr.number,
+              body: [
+                '🤖 **CIMEIKA Auto-Merge**',
+                '',
+                `✅ \`${context.payload.pull_request.title}\``,
+                `📦 Тип оновлення: \`${{ needs.dependabot-gate.outputs.update-type }}\``,
+                `🔀 Merge: squash → \`main\``,
+                '',
+                '_Автоматично оброблено Dependabot Auto-Merge workflow_'
+              ].join('\n')
+            });
+
+  # ─── КРОК 4: Merge existing open Dependabot PRs (batch) ──────────────────
+  batch-merge-existing:
+    name: Batch Merge Existing Dependabot PRs
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch'
+    steps:
+      - name: Merge all open Dependabot PRs (patch/minor)
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { data: prs } = await github.rest.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              per_page: 50
+            });
+
+            const dependabotPRs = prs.filter(pr =>
+              pr.user.login === 'dependabot[bot]'
+            );
+
+            console.log(`Знайдено ${dependabotPRs.length} Dependabot PRs`);
+
+            for (const pr of dependabotPRs) {
+              try {
+                // approve
+                await github.rest.pulls.createReview({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  pull_number: pr.number,
+                  event: 'APPROVE'
+                });
+
+                // enable auto-merge
+                await github.rest.pulls.merge({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  pull_number: pr.number,
+                  merge_method: 'squash'
+                });
+
+                console.log(`✅ Merged PR #${pr.number}: ${pr.title}`);
+              } catch (err) {
+                console.log(`⚠️ PR #${pr.number} не merged: ${err.message}`);
+              }
+            }
