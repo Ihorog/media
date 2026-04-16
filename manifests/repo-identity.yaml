@@ -1,0 +1,7 @@
+repo:
+  repo_id: media
+  repo_name: media
+  visibility: snapshot_or_managed
+  layer: assets
+  class: asset_storage
+  status: canonical_assets_repo

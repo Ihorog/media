@@ -1,0 +1,13 @@
+repo_id: media
+
+boundaries:
+  allowed:
+    - source_assets
+    - asset_metadata
+    - publication_assets
+    - asset_exports
+  not_allowed:
+    - runtime_logic
+    - orchestration
+    - primary_product_ui
+    - canonical_registry_ownership
