@@ -1,5 +1,5 @@
 {
-  "version": "0.1",
+  "version": "0.2",
   "mediaTypes": ["image", "audio", "video", "text"],
   "assets": {
     "ci-icon-72": {
@@ -38,7 +38,7 @@
       "id": "ci-logo-primary",
       "type": "image",
       "format": "png",
-      "path": "Ci.png",
+      "path": "brand/ci/Ci-192.png",
       "role": "logo",
       "brand": "ci"
     },
