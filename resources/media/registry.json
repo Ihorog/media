@@ -1,4 +1,4 @@
-{
+﻿{
   "version": "0.2",
   "mediaTypes": ["image", "audio", "video", "text"],
   "assets": {
@@ -6,7 +6,7 @@
       "id": "ci-icon-72",
       "type": "image",
       "format": "png",
-      "path": "72.png",
+      "path": "brand/ci/Ci-72.png",
       "role": "icon",
       "brand": "ci"
     },
@@ -14,7 +14,7 @@
       "id": "ci-icon-128",
       "type": "image",
       "format": "png",
-      "path": "128.png",
+      "path": "brand/ci/Ci-128.png",
       "role": "icon",
       "brand": "ci"
     },
@@ -22,7 +22,7 @@
       "id": "ci-icon-192",
       "type": "image",
       "format": "png",
-      "path": "icon-192.png",
+      "path": "brand/ci/Ci-192.png",
       "role": "icon",
       "brand": "ci"
     },
@@ -30,7 +30,7 @@
       "id": "ci-icon-512",
       "type": "image",
       "format": "png",
-      "path": "icon-512.png",
+      "path": "brand/ci/Ci-512.png",
       "role": "icon",
       "brand": "ci"
     },
